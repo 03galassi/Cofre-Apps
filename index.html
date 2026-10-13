@@ -4,37 +4,62 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#0e5c4f">
+<meta name="theme-color" content="#000000">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Cofre">
 <title>Cofre de Acessos</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect x='1' y='1' width='38' height='38' rx='10' fill='%230e5c4f'/%3E%3Ccircle cx='20' cy='20' r='10' fill='none' stroke='white' stroke-width='2'/%3E%3Ccircle cx='20' cy='20' r='3' fill='%23a77b2c'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: one centered column (max 880px); vault dial on the lock screen, card grid at home, dense rows in lists. */
+/* Layout: one centered column (max 880px); black-and-white striped identity, vault dial on the lock screen, card grid at home. */
 :root{
-  --bg:#eef1ee; --surface:#ffffff; --surface-2:#f5f7f4; --line:#d6ddd7;
-  --fg:#16211d; --muted:#5d6b65; --accent:#0e5c4f; --accent-fg:#ffffff;
-  --brass:#a77b2c; --danger:#b3261e; --ok:#1d7a4a; --shadow:0 1px 2px rgba(16,40,32,.06),0 8px 24px rgba(16,40,32,.07);
-  --f-display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --bg:#f3f3f3; --surface:#ffffff; --surface-2:#efefef; --line:#d4d4d4;
+  --fg:#0a0a0a; --muted:#5a5a5a; --accent:#0a0a0a; --accent-fg:#ffffff;
+  --brass:#d0021b; --red:#d0021b; --danger:#c62828; --ok:#1b7f3b; --shadow:0 1px 2px rgba(0,0,0,.06),0 10px 28px rgba(0,0,0,.08);
+  --stripe-a:#0a0a0a; --stripe-b:#ffffff;
+  --f-display:"Bebas Neue",Impact,"Arial Narrow",sans-serif;
   --f-body:"IBM Plex Sans",ui-sans-serif,system-ui,sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
   --r:12px;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0d1714; --surface:#14211d; --surface-2:#1a2a25; --line:#29403a;
-  --fg:#e5ede9; --muted:#97aaa2; --accent:#4fbfa6; --accent-fg:#06221c;
-  --brass:#d6a957; --danger:#f2867e; --ok:#6fd39f; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  --bg:#050505; --surface:#121212; --surface-2:#1c1c1c; --line:#2f2f2f;
+  --fg:#f5f5f5; --muted:#a6a6a6; --accent:#ffffff; --accent-fg:#000000;
+  --brass:#ff4d5a; --red:#ff4d5a; --danger:#ff8a80; --ok:#81c995; --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 28px rgba(0,0,0,.4);
+  --stripe-a:#ffffff; --stripe-b:#050505;
   color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0d1714; --surface:#14211d; --surface-2:#1a2a25; --line:#29403a;
-  --fg:#e5ede9; --muted:#97aaa2; --accent:#4fbfa6; --accent-fg:#06221c;
-  --brass:#d6a957; --danger:#f2867e; --ok:#6fd39f; --shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);
+  --bg:#050505; --surface:#121212; --surface-2:#1c1c1c; --line:#2f2f2f;
+  --fg:#f5f5f5; --muted:#a6a6a6; --accent:#ffffff; --accent-fg:#000000;
+  --brass:#ff4d5a; --red:#ff4d5a; --danger:#ff8a80; --ok:#81c995; --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 28px rgba(0,0,0,.4);
+  --stripe-a:#ffffff; --stripe-b:#050505;
   color-scheme:dark}
 *{box-sizing:border-box}
+.stripes{height:8px;border-radius:4px;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 12px,var(--stripe-b) 12px 24px);border:1px solid var(--stripe-a)}
+.lock-card{position:relative;overflow:hidden}
+.lock-card .stripes{position:absolute;left:0;right:0;top:0;border-radius:0;border-width:0 0 1px}
+.top{position:relative}
+.top::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:4px;background:repeating-linear-gradient(90deg,var(--stripe-a) 0 10px,transparent 10px 20px)}
+.tile{overflow:hidden}
+.tile::before{content:"";position:absolute;right:0;top:0;bottom:0;width:6px;background:repeating-linear-gradient(180deg,var(--stripe-a) 0 10px,var(--stripe-b) 10px 20px);opacity:.9}
+.install{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;background:var(--accent);color:var(--accent-fg)}
+.install img{width:44px;height:44px;border-radius:10px;flex:none;border:1px solid color-mix(in srgb,var(--accent-fg) 25%,transparent)}
+.install .t{flex:1;min-width:160px;display:grid;gap:2px}
+.install strong{font-family:var(--f-display);font-weight:400;font-size:22px;letter-spacing:.04em;line-height:1}
+.install span{font-size:13px;opacity:.85}
+.install .btn{background:var(--accent-fg);color:var(--accent)}
+.install .x{background:none;border:0;color:var(--accent-fg);opacity:.7;font-size:22px;line-height:1;padding:4px 8px}
+.install .x:hover{opacity:1}
+.home-install{margin-bottom:20px}
 html,body{min-height:100%}
 body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 .wrap{max-width:880px;margin:0 auto;padding-inline:16px;padding-block:24px 64px}
-h1,h2,h3{font-family:var(--f-display);font-weight:700;letter-spacing:-.01em;text-wrap:balance;margin:0}
+h1,h2,h3{font-family:var(--f-display);font-weight:400;letter-spacing:.03em;line-height:1.05;text-wrap:balance;margin:0}
 button{font:inherit;cursor:pointer}
 input{font:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
@@ -73,7 +98,7 @@ input{font:inherit}
 .dial{width:120px;height:120px}
 .dial .ring{transition:transform .35s cubic-bezier(.3,1.4,.5,1);transform-origin:60px 60px}
 .brand{text-align:center;display:grid;gap:4px}
-.brand h1{font-size:28px}
+.brand h1{font-size:40px}
 .brand p{margin:0;color:var(--muted);font-size:14px}
 .store-note{display:flex;gap:8px;align-items:center;justify-content:center;font-size:12px;color:var(--muted)}
 .dot{width:7px;height:7px;border-radius:50%;background:var(--muted)}
@@ -86,18 +111,18 @@ input{font:inherit}
 .top{display:flex;align-items:center;gap:12px;justify-content:space-between;padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:24px}
 .top .who{display:flex;align-items:center;gap:12px;min-width:0}
 .mark{width:38px;height:38px;flex:none}
-.top h1{font-size:20px}
+.top h1{font-size:26px}
 .top .sub{font-size:13px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .top .actions{display:flex;gap:8px}
 .greet{margin-bottom:20px}
-.greet h2{font-size:clamp(26px,5vw,36px)}
+.greet h2{font-size:clamp(36px,7vw,52px)}
 .greet p{margin:6px 0 0;color:var(--muted)}
 .tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px}
 .tile{position:relative;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:22px;display:grid;gap:14px;color:var(--fg);box-shadow:var(--shadow);transition:border-color .15s,transform .15s}
 .tile:hover{border-color:var(--accent);transform:translateY(-2px)}
 .tile .ic{width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--accent)}
 .tile .ic svg{width:24px;height:24px}
-.tile h3{font-size:22px}
+.tile h3{font-size:32px}
 .tile p{margin:0;color:var(--muted);font-size:14px}
 .tile .count{font-family:var(--f-mono);font-size:13px;color:var(--brass);letter-spacing:.04em}
 .tile .arrow{position:absolute;right:20px;top:22px;color:var(--muted)}
@@ -106,14 +131,14 @@ input{font:inherit}
 
 /* list */
 .list-head{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:16px}
-.list-head h2{font-size:28px;flex:1;min-width:180px}
+.list-head h2{font-size:40px;flex:1;min-width:180px}
 .back{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--muted);padding:0;margin-bottom:12px;font-weight:500}
 .back:hover{color:var(--fg)}
 .search{flex:1 1 240px}
 .rows{display:grid;gap:10px}
 .row{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px 16px;display:grid;gap:10px}
 .row-top{display:flex;align-items:flex-start;gap:12px}
-.avatar{width:38px;height:38px;flex:none;border-radius:10px;display:grid;place-items:center;font-family:var(--f-display);font-weight:700;font-size:17px;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.avatar{width:38px;height:38px;flex:none;border-radius:10px;display:grid;place-items:center;font-family:var(--f-display);font-weight:400;font-size:22px;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
 .row-title{flex:1;min-width:0}
 .row-title strong{display:block;font-size:16px;overflow-wrap:anywhere}
 .row-title a{font-family:var(--f-mono);font-size:13px;color:var(--accent);text-decoration:none;overflow-wrap:anywhere}
@@ -126,7 +151,7 @@ input{font:inherit}
 .kv .cell .txt{flex:1;min-width:0;display:grid}
 .kv .cell .icon-btn{width:30px;height:30px;flex:none;background:transparent;border:0}
 .empty{border:1px dashed var(--line);border-radius:16px;padding:36px 20px;text-align:center;display:grid;gap:12px;justify-items:center;color:var(--muted)}
-.empty h3{color:var(--fg);font-size:20px}
+.empty h3{color:var(--fg);font-size:28px}
 .confirm{display:flex;flex-wrap:wrap;align-items:center;gap:10px;font-size:14px;padding:10px 12px;border-radius:8px;background:color-mix(in srgb,var(--danger) 9%,transparent)}
 .confirm span{flex:1;min-width:160px}
 
@@ -134,7 +159,7 @@ input{font:inherit}
 .scrim{position:fixed;inset:0;background:rgba(8,20,16,.45);display:grid;place-items:end center;z-index:20;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
 @media (min-width:640px){.scrim{place-items:center}}
 .sheet{width:100%;max-width:520px;max-height:calc(100vh - 32px);overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:22px;display:grid;gap:14px}
-.sheet h3{font-size:22px}
+.sheet h3{font-size:32px}
 .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
 .sheet-foot{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:4px}
 .hint{font-size:12.5px;color:var(--muted)}
@@ -142,6 +167,17 @@ input{font:inherit}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;font-weight:500;z-index:40;box-shadow:var(--shadow)}
 .saving{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* red details */
+.top{border-bottom:2px solid var(--red)}
+.lock-card .stripes{border-bottom:3px solid var(--red)}
+.tile:hover{border-color:var(--red)}
+.tile .ic{background:color-mix(in srgb,var(--red) 12%,transparent);color:var(--red)}
+.btn:not(.ghost):not(.danger){box-shadow:inset 0 -3px 0 var(--red)}
+.install{border-left:6px solid var(--red)}
+.avatar{box-shadow:inset 0 -3px 0 var(--red)}
+.link{color:var(--fg);text-decoration-color:var(--red);text-decoration-thickness:2px}
+.row-title a{color:var(--fg);text-decoration:underline;text-decoration-color:var(--red);text-underline-offset:3px}
+:focus-visible{outline-color:var(--red)}
 </style>
 </head>
 <body>
@@ -301,7 +337,7 @@ function subscribe(uid) {
     S.unsubs.push(onSnapshot(ref, snap => {
       S.data[kind] = snap.docs.map(d => ({ id: d.id, ...d.data() }));
       S.loaded[kind] = true;
-      if (!S.editing) render(true);
+      if (!S.editing && ["home", "logins", "apps"].includes(S.view)) render(true);
     }, err => {
       console.error(err);
       toast(err.code === "permission-denied" ? "Sem permissão no banco de dados. Confira as regras do Firestore." : "Erro ao carregar os dados.");
@@ -336,13 +372,15 @@ function viewNotConfigured() {
 function viewLoading() { return `<div class="lock"><p class="muted">Carregando…</p></div>`; }
 function viewLock() {
   return `<div class="lock"><form class="lock-card" id="f-login" novalidate>
-    <div class="dial-wrap">${dialSVG}</div>
+    <div class="stripes"></div>
+    <div class="dial-wrap" style="margin-top:8px">${dialSVG}</div>
     <div class="brand"><h1>Cofre de Acessos</h1><p>Seus logins e aplicativos em um só lugar.</p></div>
     <div class="field"><label for="l-email">E-mail</label><div class="input"><input id="l-email" type="email" autocomplete="username" inputmode="email" value="${esc(S.lastEmail || ALLOWED_EMAIL)}"></div></div>
     ${passField("l-pass", "Senha")}
     <div id="lock-msg" class="msg err" hidden></div>
     <button class="btn block" id="b-login" type="submit">Entrar</button>
     <div style="text-align:center"><button type="button" class="link" data-go="recover">Esqueci minha senha</button></div>
+    ${installBanner()}
   </form></div>`;
 }
 function viewRecover() {
@@ -367,7 +405,7 @@ function viewSetup() {
   </form></div>`;
 }
 function topBar() {
-  return `<header class="top"><div class="who"><svg class="mark" viewBox="0 0 40 40" aria-hidden="true"><rect x="1" y="1" width="38" height="38" rx="10" fill="var(--accent)"/><circle cx="20" cy="20" r="10" fill="none" stroke="var(--accent-fg)" stroke-width="2"/><circle cx="20" cy="20" r="3" fill="var(--brass)"/><path d="M20 10v4M20 26v4M10 20h4M26 20h4" stroke="var(--accent-fg)" stroke-width="2" stroke-linecap="round"/></svg>
+  return `<header class="top"><div class="who"><img class="mark" src="icon-192.png" alt="" style="border-radius:10px">
     <div style="min-width:0"><h1>Cofre de Acessos</h1><div class="sub">${esc(S.user.email)}</div></div></div>
     <div class="actions"><button class="icon-btn" data-go="settings" aria-label="Configurações" title="Configurações">${icon("gear")}</button><button class="icon-btn" id="b-lock" aria-label="Sair" title="Sair">${icon("lock")}</button></div></header>`;
 }
@@ -375,6 +413,7 @@ function viewHome() {
   const plural = (n, a, b) => `${n} ${n === 1 ? a : b}`;
   const cnt = (k, a, b) => S.loaded[k] ? plural(S.data[k].length, a, b) : "carregando…";
   return `${topBar()}
+  ${installBanner("home-install")}
   <div class="greet"><h2>O que você quer abrir?</h2><p>Escolha uma área para consultar ou cadastrar acessos.</p></div>
   <div class="tiles">
     <button class="tile" data-go="logins"><span class="arrow">${icon("arrow")}</span><span class="ic">${icon("key")}</span><span><h3>Meus Logins</h3><p>Sites e serviços: nome, endereço, login e senha.</p></span><span class="count">${cnt("logins", "login salvo", "logins salvos")}</span></button>
@@ -420,14 +459,14 @@ function viewSettings() {
   <button class="back" data-go="home">${icon("back")} Início</button>
   <div class="list-head"><h2>Configurações</h2></div>
   <div class="rows">
-    <form class="row" id="f-chpw" novalidate><h3 style="font-size:18px">Alterar senha</h3>
+    <form class="row" id="f-chpw" novalidate><h3 style="font-size:26px">Alterar senha</h3>
       <div class="grid2">${passField("c-old", "Senha atual")}${passField("c-new", "Nova senha", "new-password")}</div>
       ${passField("c-new2", "Repita a nova senha", "new-password")}
       <div id="chpw-msg" class="msg err" hidden></div>
       <div><button class="btn" type="submit">Salvar nova senha</button></div></form>
-    <div class="row"><h3 style="font-size:18px">Recuperação de senha</h3>
+    <div class="row"><h3 style="font-size:26px">Recuperação de senha</h3>
       <p class="muted small" style="margin:0">Se esquecer a senha, use “Esqueci minha senha” na tela de entrada. O link de redefinição é enviado para ${esc(S.user.email)}.</p></div>
-    <div class="row"><h3 style="font-size:18px">Segurança</h3>
+    <div class="row"><h3 style="font-size:26px">Segurança</h3>
       <p class="muted small" style="margin:0">Os cadastros ficam no Firestore do seu projeto Firebase, acessíveis apenas com este login. Você sai automaticamente após ${LOCK_AFTER_MINUTES} minutos sem uso ou ao fechar a aba.</p></div>
   </div>`;
 }
@@ -579,6 +618,31 @@ app.addEventListener("click", e => {
   }
 });
 addEventListener("keydown", e => { if (e.key === "Escape" && S.editing) { S.editing = null; render(); } });
+
+/* ---------- install (PWA) ---------- */
+let deferredPrompt = null;
+const isStandalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+const INSTALL_KEY = "cofre-install-dismissed";
+const installDismissed = () => { try { return localStorage.getItem(INSTALL_KEY) === "1"; } catch { return false; } };
+function installBanner(extra = "") {
+  if (isStandalone() || installDismissed()) return "";
+  if (deferredPrompt) return `<div class="install ${extra}"><img src="icon-192.png" alt=""><div class="t"><strong>Instale o Cofre</strong><span>Abra direto da tela inicial, como um aplicativo.</span></div><button type="button" class="btn" data-install>Instalar</button><button type="button" class="x" data-install-x aria-label="Agora não">×</button></div>`;
+  if (isIOS) return `<div class="install ${extra}"><img src="icon-192.png" alt=""><div class="t"><strong>Instale o Cofre no iPhone</strong><span>No Safari, toque em Compartilhar (quadrado com seta) e depois em “Adicionar à Tela de Início”.</span></div><button type="button" class="x" data-install-x aria-label="Fechar">×</button></div>`;
+  return "";
+}
+const canRepaint = () => !S.editing && ["lock", "home", "logins", "apps"].includes(S.view) && !(document.activeElement && document.activeElement.type === "password" && document.activeElement.value);
+addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredPrompt = e; if (canRepaint()) render(true); });
+addEventListener("appinstalled", () => { deferredPrompt = null; toast("Aplicativo instalado"); if (canRepaint()) render(true); });
+app.addEventListener("click", async e => {
+  const b = e.target.closest("[data-install],[data-install-x]"); if (!b) return;
+  if ("installX" in b.dataset) { try { localStorage.setItem(INSTALL_KEY, "1"); } catch {} render(true); return; }
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  try { await deferredPrompt.userChoice; } catch {}
+  deferredPrompt = null; render(true);
+});
+if ("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(() => {});
 
 /* ---------- boot ---------- */
 if (!configured) render();
