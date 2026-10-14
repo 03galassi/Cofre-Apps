@@ -1,6 +1,6 @@
 // Cofre de Acessos — service worker (permite instalar e abrir o app mais rápido).
 // Os dados (logins e aplicativos) nunca ficam neste cache: vêm sempre do Firebase.
-const CACHE = "cofre-v2";
+const CACHE = "cofre-v3-visual";
 const ASSETS = ["./", "./index.html", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-maskable-512.png", "./apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
