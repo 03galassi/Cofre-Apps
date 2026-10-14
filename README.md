@@ -1,12 +1,14 @@
 # Cofre de Acessos
 
-Aplicativo web para guardar **logins de sites** e **dados de acesso de aplicativos** (URL, hospedagem, base de dados, login e senha), com:
+Aplicativo web para guardar **logins de sites e serviços** (nome, URL, login, senha e observações), com:
 
 - login com e-mail e senha (Firebase Authentication);
 - **recuperação de senha por e-mail** (o Firebase envia um link para redefinir a senha);
 - troca obrigatória da senha inicial `000000` no primeiro acesso;
 - dados guardados no **Cloud Firestore**, acessíveis apenas pelo e-mail autorizado;
 - saída automática após 10 minutos sem uso e ao fechar a aba;
+- visual colorido com animações suaves (desligadas automaticamente se o aparelho pedir menos movimento);
+- fontes de leitura fácil: Lexend (títulos), Atkinson Hyperlegible (textos) e JetBrains Mono (senhas e endereços);
 - tema claro e escuro automáticos, funciona no celular e no computador.
 
 Hospedagem: **GitHub Pages** (gratuito). Banco de dados e login: **Firebase** (plano gratuito Spark é suficiente).
@@ -16,13 +18,14 @@ Hospedagem: **GitHub Pages** (gratuito). Banco de dados e login: **Firebase** (p
 ## Estrutura
 
 ```
-index.html            página do app
-css/styles.css        visual
-js/app.js             lógica (login, recuperação, cadastros)
-js/firebase-config.js configuração do Firebase  ← você edita este arquivo
+index.html            o app completo (visual, lógica e configuração do Firebase)
+sw.js                 permite instalar o app e abrir mais rápido
+manifest.webmanifest  nome, cores e ícones do app instalado
 firestore.rules       regras de segurança do banco ← você cola no Firebase
 .nojekyll             necessário para o GitHub Pages
 ```
+
+> `app.js`, `styles.css` e `firebase-config.js` são de uma versão antiga e não são usados pelo `index.html`.
 
 ---
 
@@ -48,7 +51,7 @@ firestore.rules       regras de segurança do banco ← você cola no Firebase
 
 1. Em **Configurações do projeto** (engrenagem) > **Geral** > **Seus apps**, clique no ícone **Web `</>`**, dê um nome (ex.: `cofre-web`) e clique em **Registrar app**. Não precisa ativar o Firebase Hosting.
 2. Copie os valores do objeto `firebaseConfig` que aparecem na tela.
-3. Abra `js/firebase-config.js` e substitua os valores de exemplo (`COLE_AQUI`, `SEU-PROJETO` etc.) pelos copiados.
+3. Abra `index.html`, procure o bloco **CONFIGURAÇÃO DO FIREBASE** e substitua os valores de exemplo (`COLE_AQUI`, `SEU-PROJETO` etc.) pelos copiados.
 
 > Esses valores identificam o projeto e podem ficar públicos no GitHub. Quem protege os dados são as regras do Firestore e o login.
 
@@ -89,15 +92,16 @@ No Firebase, em **Authentication > Configurações > Domínios autorizados**, cl
 
 ## Segurança
 
-- Só o e-mail `03galassi@gmail.com` lê e grava dados: a regra do Firestore confere o usuário logado e o e-mail. Para trocar o e-mail autorizado, altere-o em `firestore.rules` (publique de novo no Firebase) **e** em `js/firebase-config.js`.
+- Só o e-mail `03galassi@gmail.com` lê e grava dados: a regra do Firestore confere o usuário logado e o e-mail. Para trocar o e-mail autorizado, altere-o em `firestore.rules` (publique de novo no Firebase) **e** em `ALLOWED_EMAIL`, no `index.html`.
 - Os cadastros ficam no Firestore do seu projeto Google. Quem tiver acesso ao console do Firebase com a sua conta Google consegue ver os dados, então proteja essa conta com verificação em duas etapas.
-- A sessão termina ao fechar a aba e após 10 minutos sem uso (ajustável em `LOCK_AFTER_MINUTES`, no `firebase-config.js`).
+- A sessão termina ao fechar a aba e após 10 minutos sem uso (ajustável em `LOCK_AFTER_MINUTES`, no `index.html`).
 
 ## Estrutura dos dados no Firestore
 
 ```
-users/{uid}/logins/{id}  →  nome, url, login, senha, criado, atualizado
-users/{uid}/apps/{id}    →  nome, url, hospedagem, banco, login, senha, criado, atualizado
+users/{uid}/logins/{id}  →  nome, url, login, senha, obs, criado, atualizado
 ```
+
+A área “Meus Aplicativos” foi removida do app. Cadastros antigos dessa área continuam guardados no Firestore em `users/{uid}/apps` (não foram apagados); só não aparecem mais na tela.
 
 Nenhum campo é obrigatório; a URL é guardada sem `http(s)://`.
